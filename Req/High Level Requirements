@@ -1,0 +1,8 @@
+- user interface/ display 					          	non-functional
+- move between planets(distance, speed, time) 	functional
+- select action at each planet(trade good)		  functional
+- each planet has distinct characteristics		  non-functional
+- Maintain and modify values					          functional
+- uses database									                non-functional	
+- back story									                  non-functional													
+- Moves through time							              functional/non-functional
