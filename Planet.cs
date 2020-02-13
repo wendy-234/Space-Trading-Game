@@ -6,5 +6,7 @@ namespace Star_Wars_Trading_Game
 {
     class Planet
     {
+       
     }
+    
 }
