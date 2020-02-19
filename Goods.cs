@@ -6,13 +6,15 @@ namespace Star_Wars_Trading_Game
 {
     class Goods
     {
-        public double price;
-        public string name { get; set; }
+        public double Price {get; set; }
+        public int Quantity {get; set; }
+        public string Name  {get; set; }
 
-        public Goods(double price, string name)
+        public Goods(double price, int quantity, string name)
         {
-            this.price = price;
-            this.name = name;
+            this.Price = price;
+            this.Quantity = quantity;
+            this.Name = name;
         }
 
 
