@@ -29,8 +29,9 @@ namespace Star_Wars_Trading_Game
                 NewPrice(inventory, currentWorld);
 
                 currentState = Trade(planets, inventory, currentState);
-
-                Console.WriteLine(currentState.Item3);
+                
+                // using these to verify my program works 
+                Console.WriteLine(currentState.Item3);    
                 Console.WriteLine(inventory[1].Quantity);
 
             } while (currentState.Item2 <= 83.0);
