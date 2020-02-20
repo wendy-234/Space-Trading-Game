@@ -4,8 +4,11 @@ using System.Text;
 
 namespace Star_Wars_Trading_Game
 {
-    class Goods
+
+    class GoodsPrice
     {
+      
+
 
     }
 }
