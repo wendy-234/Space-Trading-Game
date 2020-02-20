@@ -19,7 +19,7 @@ public class Main_Menu
         bool run = true;
         List<(string, int)> tradingGame = new List<(string, int)>();
 
-        Planet currentPlanet = Galaxy.Tatooine;
+        Planet currentPlanet = Galaxy.Alderan;
 
         Console.Clear();
         //Display header first
