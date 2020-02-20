@@ -5,7 +5,7 @@ using System.Text;
 namespace Star_Wars_Trading_Game
 {
 
-    class GoodsPrice
+    class Goods
     {
         public double Price {get; set; }
         public int Quantity {get; set; }
