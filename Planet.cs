@@ -16,4 +16,5 @@ namespace Star_Wars_Trading_Game
             Console.WriteLine(planetImage);
         }
     }
+    
 }
