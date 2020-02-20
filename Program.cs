@@ -195,7 +195,7 @@ namespace Star_Wars_Trading_Game
                 }
                 else if (currentWorld == 1)
                 {
-                    inventory[i].Price = 1.5 * inventory[i].Price;
+                    inventory[i].Price *= 1.5 ;
                 }
                 else if (currentWorld == 2)
                 {
