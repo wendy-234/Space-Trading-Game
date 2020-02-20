@@ -26,8 +26,8 @@ namespace Star_Wars_Trading_Game
             var planets = new List<World>();
             var inventory = new List<Goods>();
             int currentWorld = 0;
-            double currentTime = 18;
-            double currentMoney = 500.0;
+            double currentTime = 18;        // Years
+            double currentMoney = 500.0;    // Imperial Credits
             bool loanPaid = false;
 
             (int, double, double, bool) currentState = (currentWorld, currentTime, currentMoney, loanPaid);
@@ -39,19 +39,12 @@ namespace Star_Wars_Trading_Game
 
             do
             {
-                // displayWorld(planets, inventory, currentState);                
-                // need to add highlighting to currentState.item1
-
                 NewPrice(inventory, currentWorld);
+                                
+                DisplayStats(planets, inventory, currentState);
+
                 currentState = Actions(planets, inventory, currentState);
 
-                Console.WriteLine($"Imperial Credits: {currentState.Item3}");
-                Console.WriteLine($"Age: {currentState.Item2} \n");
-                for(int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine($"{inventory[i].Name}: {inventory[i].Quantity}");
-                }
-                //Console.WriteLine(inventory[1].Quantity);
 
             } while (currentState.Item2 <= 83.0 || currentState.Item3 <= 2000000.0);
 
@@ -59,6 +52,19 @@ namespace Star_Wars_Trading_Game
 
             EndCredits(currentState);
 
+        }
+
+        private static void DisplayStats(List<World> planets, List<Goods> inventory, (int, double, double, bool) currentState)
+        {
+            Console.WriteLine($"You have arrived at {planets[currentState.Item1].Name}");
+            Console.WriteLine($"Imperial Credits: {currentState.Item3}");
+            Console.WriteLine($"Age: {currentState.Item2} \n");
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine($"{inventory[i].Name}: {inventory[i].Quantity}");
+            }
+            Console.WriteLine();
         }
 
         private static void EndCredits((int, double, double, bool) currentState)
@@ -105,7 +111,7 @@ namespace Star_Wars_Trading_Game
             {
                 Console.WriteLine("What item do you want to Buy? (Enter 1-5)");
                 int temp = Convert.ToInt32(Console.ReadLine()) - 1;
-
+                Console.Clear();
 
                 if (currentState.Item3 >= 10 * inventory[temp].Price)
                 {
@@ -121,6 +127,7 @@ namespace Star_Wars_Trading_Game
             {
                 Console.WriteLine("What item do you want to sell? (Enter 1-5)");
                 int temp = Convert.ToInt32(Console.ReadLine()) - 1;
+                Console.Clear();
 
                 if (inventory[temp].Quantity > 0)
                 {
@@ -137,6 +144,7 @@ namespace Star_Wars_Trading_Game
             {
                 Console.WriteLine("What item do you want to sell? (Enter 1-5)");
                 int temp = Convert.ToInt32(Console.ReadLine()) - 1;
+                Console.Clear();
 
                 if (inventory[temp].Quantity > 0)
                 {
@@ -158,10 +166,11 @@ namespace Star_Wars_Trading_Game
             {
                 currentState.Item3 -= 500000.0;
                 currentState.Item4 = true;
+                Console.WriteLine("You just paid off your loan!");
             }
             else if (input == 4 && currentState.Item3 <= 500000.0)
             {
-                Console.WriteLine("You don't have enough Imperial Credits to do this");
+                Console.WriteLine("You don't have enough Imperial Credits to do this!");
             }
 
             return currentState;
@@ -189,7 +198,7 @@ namespace Star_Wars_Trading_Game
                 }
                 else if (currentWorld == 1)
                 {
-                    inventory[i].Price = 1.5 * inventory[i].Price;
+                    inventory[i].Price *= 1.5 ;
                 }
                 else if (currentWorld == 2)
                 {
@@ -212,7 +221,7 @@ namespace Star_Wars_Trading_Game
             
             if (nextWorld >= 0)
             {
-                Console.WriteLine($"You arrived at {planets[nextWorld].Name}.");
+               // Console.WriteLine($"You arrived at {planets[nextWorld].Name}.");
             }
             else
             {
@@ -255,15 +264,5 @@ namespace Star_Wars_Trading_Game
             inventory.Add(new Goods(100.0, 10, "Energy"));
         }
 
-    
-         
-        
-
-
-
-       
-      
     }
-
-    
 }
