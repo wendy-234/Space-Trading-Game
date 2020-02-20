@@ -13,8 +13,9 @@ namespace Star_Wars_Trading_Game
             int currentWorld = 0;
             double currentTime = 18;
             double currentMoney = 500.0;
+            bool loanPaid = false;
 
-            (int, double, double) currentState = (currentWorld, currentTime, currentMoney);
+            (int, double, double, bool) currentState = (currentWorld, currentTime, currentMoney, loanPaid);
 
             CreateGalaxy(planets);
             CreateInventory(inventory);
@@ -28,7 +29,7 @@ namespace Star_Wars_Trading_Game
 
                 NewPrice(inventory, currentWorld);
 
-                currentState = Trade(planets, inventory, currentState);
+                currentState = Actions(planets, inventory, currentState);
 
                 Console.WriteLine(currentState.Item3);
                 Console.WriteLine(inventory[1].Quantity);
@@ -36,18 +37,41 @@ namespace Star_Wars_Trading_Game
             } while (currentState.Item2 <= 83.0);
             // displayWorld(planets, inventory, currentState);
             // console.writeline("You have been executed for failing to pay off your loan");
+
+
+
         }
 
-        private static (int, double, double) Trade(List<World> planets, List<Goods> inventory, (int, double, double) currentState)
-        {            
-            Console.WriteLine("Buy: 1 | Sell: 2 | Travel: 3");
-            int input = Convert.ToInt32(Console.ReadLine());
+        private static (int, double, double, bool) Actions(List<World> planets, List<Goods> inventory, (int, double, double, bool) currentState)
+        {
+            int input;
+            if (currentState.Item4 == false)
+            {
+                Console.WriteLine("Buy: 1 | Sell: 2 | Travel: 3 | Pay Off Loan: 4");
+                input = Convert.ToInt32(Console.ReadLine());
+            }
+            else
+            {
+                do
+                {
+                    Console.WriteLine("Buy: 1 | Sell: 2 | Travel: 3");
+                    input = Convert.ToInt32(Console.ReadLine());
+                    if(input != 1 && input != 2 && input != 3)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid choice");
+                    }
+                } while (input != 1 && input != 2 && input != 3);
+            }
+
+
             
+
             if (input == 1) // Buy goods
             {
                 Console.WriteLine("What item do you want to Buy? (Enter 1-5)");
                 int temp = Convert.ToInt32(Console.ReadLine()) - 1;
-                
+
 
                 if (currentState.Item3 >= 10 * inventory[temp].Price)
                 {
@@ -59,32 +83,53 @@ namespace Star_Wars_Trading_Game
                     Console.WriteLine("You do not have enough Imperial Credits to buy this");
                 }
             }
-            else if (input == 2) // Sell goods
+            else if (input == 2 && currentState.Item4 == false)  // Sell goods with 10% tax
             {
                 Console.WriteLine("What item do you want to sell? (Enter 1-5)");
                 int temp = Convert.ToInt32(Console.ReadLine()) - 1;
 
                 if (inventory[temp].Quantity > 0)
                 {
-                currentState.Item3 += inventory[temp].Quantity * inventory[temp].Price;
-                inventory[temp].Quantity = 0;
+                    currentState.Item3 += inventory[temp].Quantity * inventory[temp].Price * 0.9;
+                    inventory[temp].Quantity = 0;
                 }
                 else
                 {
                     Console.WriteLine("You do not have any of this item in your inventory");
                 }
-
             }
-            else if(input == 3)
+
+            else if (input == 2 && currentState.Item4 == true)  // Sell goods with no tax
+            {
+                Console.WriteLine("What item do you want to sell? (Enter 1-5)");
+                int temp = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                if (inventory[temp].Quantity > 0)
+                {
+                    currentState.Item3 += inventory[temp].Quantity * inventory[temp].Price;
+                    inventory[temp].Quantity = 0;
+                }
+                else
+                {
+                    Console.WriteLine("You do not have any of this item in your inventory");
+                }
+            }
+            else if (input == 3)
             {
                 currentState = MovePlanets(planets, currentState);
                 currentState = RandomEvent(currentState);
 
             }
+            else if(input == 4)
+            {
+                currentState.Item4 = true;
+                
+            }
+
             return currentState;
         }
 
-        private static (int, double, double) RandomEvent((int, double, double) currentState)
+        private static (int, double, double, bool) RandomEvent((int, double, double, bool) currentState)
         {
             Random rnd = new Random();
             double chance = rnd.Next(0, 10);
@@ -124,7 +169,7 @@ namespace Star_Wars_Trading_Game
             }
             return inventory;
         }
-        public static (int, double, double) MovePlanets(List<World> planets, (int, double, double) currentState)
+        public static (int, double, double, bool) MovePlanets(List<World> planets, (int, double, double, bool) currentState)
         {
             var nextWorld = NextWorld(planets);
             
@@ -137,7 +182,7 @@ namespace Star_Wars_Trading_Game
                 Console.WriteLine("No planet was found");
             }
             
-            double distance = (planets[nextWorld].DistanceTo(planets[currentState.Item1])); 
+            double distance = (planets[nextWorld].DistanceTo(planets[currentState.Item1]));  // in light years
             double timeTraveled = (distance / 10); // warp 10  -- The result will be in years     
 
             currentState.Item2 += timeTraveled;
