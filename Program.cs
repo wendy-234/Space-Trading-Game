@@ -19,7 +19,13 @@ namespace Star_Wars_Trading_Game
         
 
         static void Main(string[] args)
-        {
+        { 
+
+            new Main_Menu().Run();
+            //new Planet().Run();
+        
+
+
             var planets = new List<World>();
             var inventory = new List<Goods>();
             int currentWorld = 0;
