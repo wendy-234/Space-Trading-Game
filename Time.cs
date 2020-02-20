@@ -6,5 +6,11 @@ namespace Star_Wars_Trading_Game
 {
     class Time
     {
+        double timeTravelled;
+
+        public Time(double timeTravelled)
+        {
+           this.timeTravelled = timeTravelled;
+        }
     }
 }
