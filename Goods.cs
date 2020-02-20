@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Star_Wars_Trading_Game
 {
+
     class Goods
     {
         public double Price {get; set; }
@@ -16,6 +17,7 @@ namespace Star_Wars_Trading_Game
             this.Quantity = quantity;
             this.Name = name;
         }
+
 
 
     }

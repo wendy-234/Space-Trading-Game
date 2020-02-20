@@ -9,8 +9,6 @@ using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Net.Mime;
 using System.Threading;
-using System.Collections.Generic;
-using System.Drawing;
 
 
 namespace Star_Wars_Trading_Game
