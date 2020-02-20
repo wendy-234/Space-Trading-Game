@@ -28,20 +28,39 @@ namespace Star_Wars_Trading_Game
                 // need to add highlighting to currentState.item1
 
                 NewPrice(inventory, currentWorld);
-
                 currentState = Actions(planets, inventory, currentState);
 
-                Console.WriteLine(currentState.Item3);
-                Console.WriteLine(inventory[1].Quantity);
+                Console.WriteLine($"Imperial Credits: {currentState.Item3}");
+                Console.WriteLine($"Age: {currentState.Item2} \n");
+                for(int i = 0; i < 5; i++)
+                {
+                    Console.WriteLine($"{inventory[i].Name}: {inventory[i].Quantity}");
+                }
+                //Console.WriteLine(inventory[1].Quantity);
 
-            } while (currentState.Item2 <= 83.0);
+            } while (currentState.Item2 <= 83.0 || currentState.Item3 <= 2000000.0);
+
             // displayWorld(planets, inventory, currentState);
-            // console.writeline("You have been executed for failing to pay off your loan");
 
-
+            EndCredits(currentState);
 
         }
 
+        private static void EndCredits((int, double, double, bool) currentState)
+        {
+            if (currentState.Item2 > 83.0 && currentState.Item4 == false)
+            {
+                Console.WriteLine("You have been executed for failing to pay off your loan");
+            }
+            else if (currentState.Item2 > 83.0 && currentState.Item4 == true)
+            {
+                Console.WriteLine("You have failed to reach your retirment goal and will continue to work until the day you die.");
+            }
+            else if (currentState.Item3 > 2000000.0)
+            {
+                Console.WriteLine("You have made enough money to retire on Earth, hapily ever after");
+            }
+        }
         private static (int, double, double, bool) Actions(List<World> planets, List<Goods> inventory, (int, double, double, bool) currentState)
         {
             int input;
@@ -120,15 +139,18 @@ namespace Star_Wars_Trading_Game
                 currentState = RandomEvent(currentState);
 
             }
-            else if(input == 4)
+            else if(input == 4 && currentState.Item3 > 500000.0)
             {
+                currentState.Item3 -= 500000.0;
                 currentState.Item4 = true;
-                
+            }
+            else if (input == 4 && currentState.Item3 <= 500000.0)
+            {
+                Console.WriteLine("You don't have enough Imperial Credits to do this");
             }
 
             return currentState;
         }
-
         private static (int, double, double, bool) RandomEvent((int, double, double, bool) currentState)
         {
             Random rnd = new Random();
