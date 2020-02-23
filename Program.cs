@@ -20,35 +20,70 @@ namespace Star_Wars_Trading_Game
 
         static void Main(string[] args)
         {
+            new Main_Menu().Header();
+
             var planets = new List<World>();
             var inventory = new List<Goods>();
             int currentWorld = 0;
             double currentTime = 18;        // Years
             double currentMoney = 500.0;    // Imperial Credits
-            bool loanPaid = false;
+            bool loanPaid = false;          // Loan is not paid off yet
 
             (int, double, double, bool) currentState = (currentWorld, currentTime, currentMoney, loanPaid);
 
             CreateGalaxy(planets);
             CreateInventory(inventory);
 
+            DisplayPlanets(planets, currentState);
             currentState = MovePlanets(planets, currentState);
-
+            
             do
             {
-                NewPrice(inventory, currentWorld);
-                                
+                //DisplayPlanets(planets, currentState);
+
+                Console.WriteLine("\t \t \t \t \t \t \t \t Hoth \n");
+                Console.WriteLine("\t \t \t \t Naboo");
+                Console.WriteLine("\n \n \t \t \t \t \t \t Alderaan \n");
+                Console.WriteLine("\t \t \t \t \t \t \t \t \t \t \t Tatooine \n \n");
+                Console.WriteLine("Dagobah \n \n ");
+
+                NewPrice(inventory, currentState);
                 DisplayStats(planets, inventory, currentState);
-
                 currentState = Actions(planets, inventory, currentState);
-
 
             } while (currentState.Item2 <= 83.0 || currentState.Item3 <= 2000000.0);
 
             // displayWorld(planets, inventory, currentState);
-
             EndCredits(currentState);
+        }
 
+        private static void ResetPrice(List<Goods> inventory)
+        {
+            inventory[0].Price = 50.0;
+            inventory[1].Price = 60.0;
+            inventory[2].Price = 150.0;
+            inventory[3].Price = 75.0;
+            inventory[4].Price = 100.0;
+        }
+
+        private static void DisplayPlanets(List<World> planets, (int, double, double, bool) currentState)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (i == currentState.Item1)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine(planets[i].Name);
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(planets[i].Name);
+                }
+
+            }
+            Console.WriteLine();
         }
 
         private static void DisplayStats(List<World> planets, List<Goods> inventory, (int, double, double, bool) currentState)
@@ -56,10 +91,11 @@ namespace Star_Wars_Trading_Game
             Console.WriteLine($"You have arrived at {planets[currentState.Item1].Name}");
             Console.WriteLine($"Imperial Credits: {currentState.Item3}");
             Console.WriteLine($"Age: {currentState.Item2} \n");
+            Console.WriteLine("Name : Quantity : Price:");
 
             for (int i = 0; i < 5; i++)
             {
-                Console.WriteLine($"{inventory[i].Name}: {inventory[i].Quantity}");
+                Console.WriteLine($"{inventory[i].Name}: {inventory[i].Quantity} : {inventory[i].Price}");
             }
             Console.WriteLine();
         }
@@ -79,6 +115,7 @@ namespace Star_Wars_Trading_Game
                 Console.WriteLine("You have made enough money to retire on Earth, hapily ever after");
             }
         }
+
         private static (int, double, double, bool) Actions(List<World> planets, List<Goods> inventory, (int, double, double, bool) currentState)
         {
             int input;
@@ -99,11 +136,7 @@ namespace Star_Wars_Trading_Game
                         Console.WriteLine("Invalid choice");
                     }
                 } while (input != 1 && input != 2 && input != 3);
-            }
-
-
-            
-
+            }           
             if (input == 1) // Buy goods
             {
                 Console.WriteLine("What item do you want to Buy? (Enter 1-5)");
@@ -136,7 +169,6 @@ namespace Star_Wars_Trading_Game
                     Console.WriteLine("You do not have any of this item in your inventory");
                 }
             }
-
             else if (input == 2 && currentState.Item4 == true)  // Sell goods with no tax
             {
                 Console.WriteLine("What item do you want to sell? (Enter 1-5)");
@@ -150,7 +182,8 @@ namespace Star_Wars_Trading_Game
                 }
                 else
                 {
-                    Console.WriteLine("You do not have any of this item in your inventory");
+                    Console.Clear();
+                    Console.WriteLine("You do not have any of this item in your inventory \n"); 
                 }
             }
             else if (input == 3)
@@ -163,15 +196,18 @@ namespace Star_Wars_Trading_Game
             {
                 currentState.Item3 -= 500000.0;
                 currentState.Item4 = true;
-                Console.WriteLine("You just paid off your loan!");
+
+                Console.Clear();
+                Console.WriteLine("You just paid off your loan! \n");
             }
             else if (input == 4 && currentState.Item3 <= 500000.0)
             {
-                Console.WriteLine("You don't have enough Imperial Credits to do this!");
+                Console.Clear();
+                Console.WriteLine("You don't have enough Imperial Credits to do this! \n");
             }
-
             return currentState;
         }
+       
         private static (int, double, double, bool) RandomEvent((int, double, double, bool) currentState)
         {
             Random rnd = new Random();
@@ -185,33 +221,40 @@ namespace Star_Wars_Trading_Game
 
             return currentState;
         }
-        private static List<Goods> NewPrice(List<Goods> inventory, int currentWorld)
-        {
-            for (int i = 0; i < 5; i++)
+
+        // I want to set these once and then leave them alone... 
+        private static (int, double, double, bool) NewPrice(List<Goods> inventory, (int, double, double, bool) currentState)  
+        {   
+            ResetPrice(inventory);
+
+            int i;
+            for (i = 0; i < 5; i++)
             {
-                if (currentWorld == 0)
+                if (currentState.Item1 == 0)
                 {
                     inventory[i].Price = inventory[i].Price;
                 }
-                else if (currentWorld == 1)
+                else if (currentState.Item1 == 1)
                 {
-                    inventory[i].Price *= 1.5 ;
+                    inventory[i].Price *= 1.5;
                 }
-                else if (currentWorld == 2)
+                else if (currentState.Item1 == 2)
                 {
-                    inventory[i].Price = 5 * inventory[i].Price;
+                    inventory[i].Price *= 5;
                 }
-                else if (currentWorld == 3)
+                else if (currentState.Item1 == 3)
                 {
-                    inventory[i].Price = 2.5 * inventory[i].Price;
+                    inventory[i].Price *= 2.5;
                 }
-                else if (currentWorld == 4)
+                else if (currentState.Item1 == 4)
                 {
-                    inventory[i].Price = 3 * inventory[i].Price;
+                    inventory[i].Price *= 3;
                 }
             }
-            return inventory;
+            return currentState;
+            
         }
+
         public static (int, double, double, bool) MovePlanets(List<World> planets, (int, double, double, bool) currentState)
         {
             var nextWorld = NextWorld(planets);
@@ -236,6 +279,7 @@ namespace Star_Wars_Trading_Game
 
             return currentState;
         }
+
         public static int NextWorld(List<World> planets)
         {
             Console.WriteLine("Which planet do you want to go to?");
@@ -244,6 +288,7 @@ namespace Star_Wars_Trading_Game
 
             return planets.FindIndex(w => w.Name == nextPlanet);
         }
+
         private static void CreateGalaxy(List<World> planets)
         {
             planets.Add(new World(0.0, 0.0, "Alderaan"));
@@ -252,6 +297,7 @@ namespace Star_Wars_Trading_Game
             planets.Add(new World(-4.0, -5.0, "Hoth"));
             planets.Add(new World(3.2, -8.0, "Dagobah"));
         }
+
         private static void CreateInventory(List<Goods> inventory )
         {
             inventory.Add(new Goods(50.0, 10, "Textiles"));
