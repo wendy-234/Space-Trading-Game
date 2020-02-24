@@ -14,47 +14,75 @@ using System.Threading;
 namespace Star_Wars_Trading_Game
 {
     class Program
-    {
-       
-        
-
+    {               
         static void Main(string[] args)
+        {
+            List<World> planets;
+            List<Goods> inventory;
+            (int, double, double, bool) currentState;
+
+            GameSetup(out planets, out inventory, out currentState);
+
+            do
+            {
+                DisplayPlanets(planets, currentState);
+                NewPrice(inventory, currentState);
+                DisplayStats(planets, inventory, currentState);
+                currentState = Actions(planets, inventory, currentState);
+
+            } while (currentState.Item2 <= 83.0 && currentState.Item3 <= 2000000.0);
+
+            EndCredits(currentState);
+        }
+
+        private static void DisplayPlanets2((int, double, double, bool)currentState)
+        {            
+                Console.WriteLine("\t \t \t \t \t \t \t \t hoth \n");
+                Console.WriteLine("\t \t \t \t naboo");           
+                Console.WriteLine("\n \n \t \t \t \t \t \t alderaan \n");
+                Console.WriteLine("\t \t \t \t \t \t \t \t \t \t \t tatooine \n \n");
+                Console.WriteLine("dagobah \n \n ");            
+        }
+
+        private static void GameSetup(out List<World> planets, out List<Goods> inventory, out (int, double, double, bool) currentState)
         {
             new Main_Menu().Header();
 
-            var planets = new List<World>();
-            var inventory = new List<Goods>();
+            Console.WriteLine("Since you were a child, you have always wanted to retire and live on Earth. But Earth is no cheap endeavor. " +
+                "You will need to save 2 Million Imperial Credits...");
+            Thread.Sleep(5000);
+            Console.WriteLine("You finally found a way to make that happen...\n" +
+                "You must meet with the Galactic Emporer and plead for a ship that you may be a trader on his behalf... ");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Console.WriteLine("You have just met with the Galactic Emperor to discuss your career as a Galactic Trader");
+            Thread.Sleep(4000);
+            Console.WriteLine("You are now the proud owner of the Millenium Falcon and indebted to the Emperor until you are able to pay off your loan");
+            Thread.Sleep(4000);
+            Console.Clear();
+            Console.Write("BUT... ");
+            Thread.Sleep(4000);
+            Console.WriteLine("If you are unable to repay your debt of 500,000 Imperial Credits after 65 Galactic years, you will be EXECUTED for your failures");
+            Thread.Sleep(4000);
+            Console.Clear();
+            Console.WriteLine("Now get to trading!");
+            Thread.Sleep(4000);
+            Console.Clear();
+
+            planets = new List<World>();
+            inventory = new List<Goods>();
             int currentWorld = 0;
             double currentTime = 18;        // Years
-            double currentMoney = 500.0;    // Imperial Credits
+            double currentMoney = 1000.0;    // Imperial Credits
             bool loanPaid = false;          // Loan is not paid off yet
 
-            (int, double, double, bool) currentState = (currentWorld, currentTime, currentMoney, loanPaid);
-
+            currentState = (currentWorld, currentTime, currentMoney, loanPaid);
             CreateGalaxy(planets);
             CreateInventory(inventory);
 
             DisplayPlanets(planets, currentState);
             currentState = MovePlanets(planets, currentState);
-            
-            do
-            {
-                //DisplayPlanets(planets, currentState);
-
-                Console.WriteLine("\t \t \t \t \t \t \t \t Hoth \n");
-                Console.WriteLine("\t \t \t \t Naboo");
-                Console.WriteLine("\n \n \t \t \t \t \t \t Alderaan \n");
-                Console.WriteLine("\t \t \t \t \t \t \t \t \t \t \t Tatooine \n \n");
-                Console.WriteLine("Dagobah \n \n ");
-
-                NewPrice(inventory, currentState);
-                DisplayStats(planets, inventory, currentState);
-                currentState = Actions(planets, inventory, currentState);
-
-            } while (currentState.Item2 <= 83.0 || currentState.Item3 <= 2000000.0);
-
-            // displayWorld(planets, inventory, currentState);
-            EndCredits(currentState);
+            Console.Clear();
         }
 
         private static void ResetPrice(List<Goods> inventory)
@@ -88,6 +116,29 @@ namespace Star_Wars_Trading_Game
 
         private static void DisplayStats(List<World> planets, List<Goods> inventory, (int, double, double, bool) currentState)
         {
+            string usedPlanet = "";
+            switch (planets[currentState.Item1].Name)
+            {
+                case "Alderaan" :
+                    usedPlanet = Galaxy.Alderaan.planetImage;
+                    break;
+                case "Naboo":
+                    usedPlanet = Galaxy.Naboo.planetImage;
+                    break;
+                case "Tatooine":
+                    usedPlanet = Galaxy.Tatooine.planetImage;
+                    break;
+                case "Hoth":
+                    usedPlanet = Galaxy.Hoth.planetImage;
+                    break;
+                case "Dagobah":
+                    usedPlanet = Galaxy.Dagobah.planetImage;
+                    break;
+                default:
+                    break;
+            }
+            Console.WriteLine($"\t\t\t\t\t\t {usedPlanet} \n");
+
             Console.WriteLine($"You have arrived at {planets[currentState.Item1].Name}");
             Console.WriteLine($"Imperial Credits: {currentState.Item3}");
             Console.WriteLine($"Age: {currentState.Item2} \n");
@@ -95,7 +146,7 @@ namespace Star_Wars_Trading_Game
 
             for (int i = 0; i < 5; i++)
             {
-                Console.WriteLine($"{inventory[i].Name}: {inventory[i].Quantity} : {inventory[i].Price}");
+                Console.WriteLine($"Item {i +1}: {inventory[i].Name}: {inventory[i].Quantity} : {inventory[i].Price}");
             }
             Console.WriteLine();
         }
@@ -188,6 +239,7 @@ namespace Star_Wars_Trading_Game
             }
             else if (input == 3)
             {
+
                 currentState = MovePlanets(planets, currentState);
                 currentState = RandomEvent(currentState);
 
@@ -213,7 +265,7 @@ namespace Star_Wars_Trading_Game
             Random rnd = new Random();
             double chance = rnd.Next(0, 10);
 
-            if (chance >= 8.0)
+            if (chance >= 5.0)
             {
                 currentState.Item3 *= 0.8;
                 Console.WriteLine($"You were attacked by Ravengers and they stole {(currentState.Item3 / 4)} Imperial Credits! \n" );
@@ -222,7 +274,7 @@ namespace Star_Wars_Trading_Game
             return currentState;
         }
 
-        // I want to set these once and then leave them alone... 
+       
         private static (int, double, double, bool) NewPrice(List<Goods> inventory, (int, double, double, bool) currentState)  
         {   
             ResetPrice(inventory);
@@ -269,14 +321,19 @@ namespace Star_Wars_Trading_Game
             }
             
             double distance = (planets[nextWorld].DistanceTo(planets[currentState.Item1]));  // in light years
-            double timeTraveled = (distance / 10); // warp 10  -- The result will be in years     
+            double timeTraveled = (distance / 10); // warp 10  -- The result will be in years   
 
+            Console.WriteLine($"It is {distance} light years and {timeTraveled} years away.\nPress 1 to go | 2 to stay");
+            var temp = Convert.ToInt32( Console.ReadLine());
+            Console.Clear();
+
+            if(temp == 1)
+            {
             currentState.Item2 += timeTraveled;
             currentState.Item1 = nextWorld;
-
-            //Console.WriteLine($"The distance bewteen these planets is: {distance} light years");
-            //Console.WriteLine($"You are now {currentState.Item2} years old");
-
+                return currentState;
+            } 
+            else           
             return currentState;
         }
 
@@ -301,10 +358,10 @@ namespace Star_Wars_Trading_Game
         private static void CreateInventory(List<Goods> inventory )
         {
             inventory.Add(new Goods(50.0, 10, "Textiles"));
-            inventory.Add(new Goods(60.0, 10, "Food"));
-            inventory.Add(new Goods(150.0, 10, "Weapons"));
-            inventory.Add(new Goods(75.0, 10, "Ores"));
-            inventory.Add(new Goods(100.0, 10, "Energy"));
+            inventory.Add(new Goods(100.0, 10, "Food"));
+            inventory.Add(new Goods(950.0, 10, "Weapons"));
+            inventory.Add(new Goods(750.0, 10, "Ores"));
+            inventory.Add(new Goods(1000.0, 10, "Energy"));
         }
 
     }
