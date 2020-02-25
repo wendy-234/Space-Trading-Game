@@ -8,7 +8,7 @@ namespace Star_Wars_Trading_Game
     {
         public static Planet Alderan => new Planet
         {
-            planetName = "Alderan",
+            planetName = "Alderaan",
             planetImage = @"  
                 ;    . ..%; 8.@8888@8@@@888X @%:.. 
                 . . :; @888@88@8@8@8@88@@@@8@X@. .    

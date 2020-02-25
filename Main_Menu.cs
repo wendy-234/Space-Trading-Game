@@ -11,7 +11,7 @@ using Star_Wars_Trading_Game;
 public class Main_Menu
 {
 
-
+    
 
     public void Run()
     {
@@ -34,7 +34,7 @@ public class Main_Menu
 
             //Displays planet names
             Listofplanets(tradingGame);
-
+            
             //Main menu
             Menu(tradingGame);
 
