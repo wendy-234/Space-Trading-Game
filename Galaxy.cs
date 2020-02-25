@@ -6,9 +6,9 @@ namespace Star_Wars_Trading_Game
 {
     class Galaxy
     {
-        public static Planet Alderan => new Planet
+        public static Planet Alderaan => new Planet
         {
-            planetName = "Alderan",
+            planetName = "Alderaan",
             planetImage = @"  
                 ;    . ..%; 8.@8888@8@@@888X @%:.. 
                 . . :; @888@88@8@8@8@88@@@@8@X@. .    

@@ -19,13 +19,12 @@ public class Main_Menu
         bool run = true;
         List<(string, int)> tradingGame = new List<(string, int)>();
 
-        Planet currentPlanet = Galaxy.Alderan;
+        Planet currentPlanet = Galaxy.Alderaan;
 
         Console.Clear();
         //Display header first
         Header();
-        Console.Write("\nPress any key to continue...");
-        _ = Console.ReadKey();
+       
 
         while (run)
         {
@@ -44,7 +43,7 @@ public class Main_Menu
             switch (key)
             {
                 case ConsoleKey.D1:
-                    currentPlanet = Galaxy.Alderan;
+                    currentPlanet = Galaxy.Alderaan;
                     break;
                 case ConsoleKey.D2:
                     currentPlanet = Galaxy.Naboo;
@@ -60,14 +59,14 @@ public class Main_Menu
                     break;
             }
         }
+    }
 
-
-        void Header()
-        {
-            Console.WriteLine(
-                "######################################################################################\n");
-            Console.WriteLine("\t\t\t\t\tWELCOME TO  \n ");
-            Console.WriteLine(@" 
+    public void Header()
+    {
+        Console.WriteLine(
+            "######################################################################################\n");
+        Console.WriteLine("\t\t\t\t\tWELCOME TO  \n ");
+        Console.WriteLine(@" 
            ______   __   __   ____
           |__  __| |  | |  | |  __|
             | |    |  |_|  | |  |_ 
@@ -90,38 +89,41 @@ public class Main_Menu
                   | |_| ||   | ____ |   || |_| ||  \/  |
                   |  _  |\   \ |  | /   /|  _  | \    / 
                   | | | | \   \/  \/   / | | | |  |  |  
-                  |_| |_|  \____/\____/  |_| |_|  |__|");
-
-
-
-        }
-
-        void Listofplanets(List<(string, int)> trading)
-        {
-            Console.WriteLine(
-                "#######################################################################################\n\n");
-            Console.WriteLine("Key Map: \n\n" +
-                              " 1 Alderan\n" +
-                              " 2 Naboo \n" +
-                              " 3 Tatooine\n" +
-                              " 4 Hoth\n" +
-                              " 5 Dagobah\n");
-
-        }
-        void Menu(List<(string, int)> trading, ConsoleKey action = 0, int page = 1)
-        {
-
-            Console.WriteLine("Current Age: ");
-
-            Console.WriteLine(
-                "\n\nChoose from the following: Press 1 - To buy, 2 - To sell ");
-            Console.WriteLine(
-                "#######################################################################################\n\n");
-        }
-
+                  |_| |_|  \____/\____/  |_| |_|  |__| ");
+        Console.WriteLine("\n");
+        Console.Write("\nPress any key to continue...");
+        _ = Console.ReadKey();
+        Console.Clear();
 
 
     }
 
+    void Listofplanets(List<(string, int)> trading)
+    {
+        Console.WriteLine(
+            "#######################################################################################\n\n");
+        Console.WriteLine("Key Map: \n\n" +
+                          " 1 Alderan\n" +
+                          " 2 Naboo \n" +
+                          " 3 Tatooine\n" +
+                          " 4 Hoth\n" +
+                          " 5 Dagobah\n");
+
+    }
+    void Menu(List<(string, int)> trading, ConsoleKey action = 0, int page = 1)
+    {
+
+        Console.WriteLine("Current Age: ");
+
+        Console.WriteLine(
+            "\n\nChoose from the following: Press 1 - To buy, 2 - To sell ");
+        Console.WriteLine(
+            "#######################################################################################\n\n");
+    }
+
+
 
 }
+
+
+
