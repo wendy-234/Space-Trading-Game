@@ -14,8 +14,10 @@ using System.Threading;
 namespace Star_Wars_Trading_Game
 {
     class Program
-    {               
-        static void Main(string[] args)
+    {
+    }
+
+    static void Main(string[] args)
         {
             List<World> planets;
             List<Goods> inventory;
@@ -378,5 +380,5 @@ namespace Star_Wars_Trading_Game
             inventory.Add(new Goods(1000.0, 10, "Energy"));
         }
 
-    }
+    
 }
