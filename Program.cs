@@ -15,9 +15,7 @@ namespace Star_Wars_Trading_Game
 {
     class Program
     {
-    }
-
-    static void Main(string[] args)
+        static void Main(string[] args)
         {
             List<World> planets;
             List<Goods> inventory;
@@ -33,32 +31,18 @@ namespace Star_Wars_Trading_Game
                 currentState = Actions(planets, inventory, currentState);
 
             } while (currentState.Item2 <= 83.0 && currentState.Item3 <= 2000000.0);
-            
+
             EndCredits(currentState);
         }
 
-        private static void DisplayPlanets2((int, double, double, bool)currentState)
-        {            
-                Console.WriteLine("\t \t \t \t \t \t \t \t hoth \n");
-                Console.WriteLine("\t \t \t \t naboo");           
-                Console.WriteLine("\n \n \t \t \t \t \t \t alderaan \n");
-                Console.WriteLine("\t \t \t \t \t \t \t \t \t \t \t tatooine \n \n");
-                Console.WriteLine("dagobah \n \n ");            
+        private static void DisplayPlanets2((int, double, double, bool) currentState)
+        {
+            Console.WriteLine("\t \t \t \t \t \t \t \t hoth \n");
+            Console.WriteLine("\t \t \t \t naboo");
+            Console.WriteLine("\n \n \t \t \t \t \t \t alderaan \n");
+            Console.WriteLine("\t \t \t \t \t \t \t \t \t \t \t tatooine \n \n");
+            Console.WriteLine("dagobah \n \n ");
         }
-        static void Main(string[] args)
-        { 
-
-            new Main_Menu().Run();
-            //new Planet().Run();
-        
-
-
-            var planets = new List<World>();
-            var inventory = new List<Goods>();
-            int currentWorld = 0;
-            double currentTime = 18;
-            double currentMoney = 500.0;
-            bool loanPaid = false;
 
         private static void GameSetup(out List<World> planets, out List<Goods> inventory, out (int, double, double, bool) currentState)
         {
@@ -135,7 +119,7 @@ namespace Star_Wars_Trading_Game
             string usedPlanet = "";
             switch (planets[currentState.Item1].Name)
             {
-                case "Alderaan" :
+                case "Alderaan":
                     usedPlanet = Galaxy.Alderaan.planetImage;
                     break;
                 case "Naboo":
@@ -162,7 +146,7 @@ namespace Star_Wars_Trading_Game
 
             for (int i = 0; i < 5; i++)
             {
-                Console.WriteLine($"Item {i +1}: {inventory[i].Name}: {inventory[i].Quantity} : {inventory[i].Price}");
+                Console.WriteLine($"Item {i + 1}: {inventory[i].Name}: {inventory[i].Quantity} : {inventory[i].Price}");
             }
             Console.WriteLine();
         }
@@ -197,13 +181,13 @@ namespace Star_Wars_Trading_Game
                 {
                     Console.WriteLine("Buy: 1 | Sell: 2 | Travel: 3");
                     input = Convert.ToInt32(Console.ReadLine());
-                    if(input != 1 && input != 2 && input != 3)
+                    if (input != 1 && input != 2 && input != 3)
                     {
                         Console.Clear();
                         Console.WriteLine("Invalid choice");
                     }
                 } while (input != 1 && input != 2 && input != 3);
-            }           
+            }
             if (input == 1) // Buy goods
             {
                 Console.WriteLine("What item do you want to Buy? (Enter 1-5)");
@@ -250,7 +234,7 @@ namespace Star_Wars_Trading_Game
                 else
                 {
                     Console.Clear();
-                    Console.WriteLine("You do not have any of this item in your inventory \n"); 
+                    Console.WriteLine("You do not have any of this item in your inventory \n");
                 }
             }
             else if (input == 3)
@@ -260,7 +244,7 @@ namespace Star_Wars_Trading_Game
                 currentState = RandomEvent(currentState);
 
             }
-            else if(input == 4 && currentState.Item3 > 500000.0)
+            else if (input == 4 && currentState.Item3 > 500000.0)
             {
                 currentState.Item3 -= 500000.0;
                 currentState.Item4 = true;
@@ -275,7 +259,7 @@ namespace Star_Wars_Trading_Game
             }
             return currentState;
         }
-       
+
         private static (int, double, double, bool) RandomEvent((int, double, double, bool) currentState)
         {
             Random rnd = new Random();
@@ -284,15 +268,15 @@ namespace Star_Wars_Trading_Game
             if (chance >= 5.0)
             {
                 currentState.Item3 *= 0.8;
-                Console.WriteLine($"You were attacked by Ravengers and they stole {(currentState.Item3 / 4)} Imperial Credits! \n" );
+                Console.WriteLine($"You were attacked by Ravengers and they stole {(currentState.Item3 / 4)} Imperial Credits! \n");
             }
 
             return currentState;
         }
 
-       
-        private static (int, double, double, bool) NewPrice(List<Goods> inventory, (int, double, double, bool) currentState)  
-        {   
+
+        private static (int, double, double, bool) NewPrice(List<Goods> inventory, (int, double, double, bool) currentState)
+        {
             ResetPrice(inventory);
 
             int i;
@@ -320,37 +304,37 @@ namespace Star_Wars_Trading_Game
                 }
             }
             return currentState;
-            
+
         }
 
         public static (int, double, double, bool) MovePlanets(List<World> planets, (int, double, double, bool) currentState)
         {
             var nextWorld = NextWorld(planets);
-            
+
             if (nextWorld >= 0)
             {
-               // Console.WriteLine($"You arrived at {planets[nextWorld].Name}.");
+                // Console.WriteLine($"You arrived at {planets[nextWorld].Name}.");
             }
             else
             {
                 Console.WriteLine("No planet was found");
             }
-            
+
             double distance = (planets[nextWorld].DistanceTo(planets[currentState.Item1]));  // in light years
             double timeTraveled = (distance / 10); // warp 10  -- The result will be in years   
 
             Console.WriteLine($"It is {distance} light years and {timeTraveled} years away.\nPress 1 to go | 2 to stay");
-            var temp = Convert.ToInt32( Console.ReadLine());
+            var temp = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
 
-            if(temp == 1)
+            if (temp == 1)
             {
-            currentState.Item2 += timeTraveled;
-            currentState.Item1 = nextWorld;
+                currentState.Item2 += timeTraveled;
+                currentState.Item1 = nextWorld;
                 return currentState;
-            } 
-            else           
-            return currentState;
+            }
+            else
+                return currentState;
         }
 
         public static int NextWorld(List<World> planets)
@@ -371,7 +355,7 @@ namespace Star_Wars_Trading_Game
             planets.Add(new World(3.2, -8.0, "Dagobah"));
         }
 
-        private static void CreateInventory(List<Goods> inventory )
+        private static void CreateInventory(List<Goods> inventory)
         {
             inventory.Add(new Goods(50.0, 10, "Textiles"));
             inventory.Add(new Goods(100.0, 10, "Food"));
@@ -380,5 +364,5 @@ namespace Star_Wars_Trading_Game
             inventory.Add(new Goods(1000.0, 10, "Energy"));
         }
 
-    
+    }
 }
