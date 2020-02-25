@@ -31,7 +31,7 @@ namespace Star_Wars_Trading_Game
                 currentState = Actions(planets, inventory, currentState);
 
             } while (currentState.Item2 <= 83.0 && currentState.Item3 <= 2000000.0);
-
+            
             EndCredits(currentState);
         }
 
